@@ -10,7 +10,7 @@ public class Grip extends SubsystemBase {
 
     private Servo grip;
 
-    private double targetPos;
+    private boolean open = true;
 
     public enum TARGETS {
         OPEN,
@@ -32,35 +32,29 @@ public class Grip extends SubsystemBase {
 
 
     public void initHardware() {
-        //arm = hardwareMap.get(DcMotor.class, "arm");
         grip = hardwareMap.get(Servo.class, "grip");
-
-        //targetPos = arm.getCurrentPosition();
-
-        //arm.setTargetPosition(targetPos);
-        //arm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         grip.setPosition(TARGETS.OPEN.getTarget());
     }
 
     @Override
     public void periodic() {
-        grip.setPosition(targetPos);
+        grip.setPosition(open ? TARGETS.OPEN.getTarget() : TARGETS.CLOSE.getTarget());
     }
 
-    public void setTargetPos(double targetPos){
-        this.targetPos = targetPos;
-    }
-
-    public double getCurrentPos(){
+    public double getCurrentPos() {
         return grip.getPosition();
     }
 
-    public double getTargetPos() {
-        return targetPos;
+    public void open() {
+        open = true;
     }
 
-    public void togglePos(){
-        targetPos = Math.abs(targetPos - TARGETS.OPEN.getTarget()) < Math.abs(targetPos - TARGETS.CLOSE.getTarget()) ? TARGETS.CLOSE.getTarget() : TARGETS.OPEN.getTarget();
+    public void close() {
+        open = false;
+    }
+
+    public void togglePos() {
+        open = !open;
     }
 }

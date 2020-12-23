@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.robot.subsystems;
 
 import com.arcrobotics.ftclib.command.SubsystemBase;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class Transfer extends SubsystemBase {
@@ -10,7 +11,6 @@ public class Transfer extends SubsystemBase {
     private DcMotor transfer;
 
     private double power = 0;
-    private boolean reverse = false;
 
     public Transfer(HardwareMap hardwareMap){
         this.hardwareMap = hardwareMap;
@@ -18,33 +18,35 @@ public class Transfer extends SubsystemBase {
         initHardware();
     }
 
-
     public void initHardware() {
         transfer = hardwareMap.get(DcMotor.class, "transfer");
+        transfer.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
     @Override
     public void periodic() {
-        transfer.setPower(power * (reverse?-1:1));
+        transfer.setPower(power);
     }
 
-    public void setPower(double power){
+    public void setDirection(DcMotorSimple.Direction direction) {
+        transfer.setDirection(direction);
+    }
+
+    public void setPower(double power) {
         this.power = power;
     }
 
-    public double getPower(){
+    public void reverse() {
+        if(transfer.getDirection() == DcMotorSimple.Direction.FORWARD) transfer.setDirection(DcMotorSimple.Direction.REVERSE);
+        else transfer.setDirection(DcMotorSimple.Direction.FORWARD);
+    }
+
+    public DcMotorSimple.Direction getDirection() {
+        return transfer.getDirection();
+    }
+
+    public double getPower() {
         return power;
     }
 
-    public void setReverse(boolean reverse){
-        this.reverse = reverse;
-    }
-
-    public void reverse(){
-        this.reverse = !this.reverse;
-    }
-
-    public boolean getReverse(){
-        return reverse;
-    }
 }
