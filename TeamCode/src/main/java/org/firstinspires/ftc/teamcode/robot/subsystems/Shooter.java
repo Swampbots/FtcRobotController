@@ -38,7 +38,6 @@ public class Shooter extends SubsystemBase {
     public void initHardware() {
         shooter = hardwareMap.get(DcMotor.class, "shooter");
         shooter.setDirection(DcMotorSimple.Direction.FORWARD);
-
     }
 
     @Override
