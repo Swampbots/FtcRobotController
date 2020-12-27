@@ -123,22 +123,22 @@ public class Drive extends SubsystemBase {
         rrDrive.setTargetPosition(rrTarget);
     }
 
-    public void setRunMode(DcMotor.RunMode runMode){
+    public void setRunMode(DcMotor.RunMode runMode) {
         flDrive.setMode(runMode);
         frDrive.setMode(runMode);
         rlDrive.setMode(runMode);
         rrDrive.setMode(runMode);
     }
 
-    public int[] getCurrentPositions(){
+    public int[] getCurrentPositions() {
         return new int[]{flDrive.getCurrentPosition(), frDrive.getCurrentPosition(), rlDrive.getCurrentPosition(), rrDrive.getCurrentPosition()};
     }
 
-    public DcMotor.RunMode getRunMode(){
+    public DcMotor.RunMode getRunMode() {
         return flDrive.getMode();
     }
 
-    public boolean driveIsBusy(){
+    public boolean driveIsBusy() {
         return flDrive.isBusy() || frDrive.isBusy() || rlDrive.isBusy() || rrDrive.isBusy();
     }
 
@@ -146,13 +146,10 @@ public class Drive extends SubsystemBase {
         return imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES).firstAngle;
     }
 
-
-    public void reverseFlDrive(){
-        if(flDrive.getDirection() == DcMotorSimple.Direction.FORWARD){
-            flDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-        } else {
-            flDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-        }
-
+    public void stop() {
+        flDrive.setPower(0);
+        frDrive.setPower(0);
+        rlDrive.setPower(0);
+        rrDrive.setPower(0);
     }
 }
